@@ -1,8 +1,0 @@
-{
-  "name": "Mein Finanzplan",
-  "short_name": "Finanzplan",
-  "start_url": "budget.html",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#2c3e50"
-}
