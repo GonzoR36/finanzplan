@@ -1,219 +1,286 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Mein Finanzplan V6</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="manifest" href="manifest.json">
+<title>Mein Finanzplan</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-body { font-family: Arial; padding:20px; background:#f4f6f9;}
-.container { background:white; padding:20px; border-radius:10px; box-shadow:0 0 10px rgba(0,0,0,0.1);}
-h2 { color:#2c3e50;}
-input, select { padding:6px; margin:5px;}
-button { padding:6px 12px; margin:3px; cursor:pointer;}
-table { width:100%; border-collapse:collapse; margin-top:15px;}
-th, td { border:1px solid #ddd; padding:8px;}
-th { background:#2c3e50; color:white;}
-.summary { font-weight:bold; margin-top:10px;}
-.warning { color:red; font-weight:bold; }
-canvas { margin-top:20px;}
+
+body{
+font-family:Arial;
+background:#f4f6f9;
+margin:40px;
+}
+
+h1{
+text-align:center;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:white;
+padding:25px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+input{
+padding:8px;
+margin:5px;
+}
+
+button{
+padding:8px 12px;
+margin:5px;
+cursor:pointer;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+}
+
+th{
+background:#eee;
+}
+
+.summary{
+margin-top:20px;
+font-size:18px;
+}
+
+canvas{
+margin-top:30px;
+}
+
 </style>
 </head>
+
 <body>
 
 <div class="container">
-<h2>Mein Finanzplan V6</h2>
 
-<label>Monat:</label>
-<select id="monthSelect" onchange="loadMonth()">
-<option>Januar</option><option>Februar</option><option>März</option>
-<option>April</option><option>Mai</option><option>Juni</option>
-<option>Juli</option><option>August</option><option>September</option>
-<option>Oktober</option><option>November</option><option>Dezember</option>
-</select>
+<h1>Mein Finanzplan</h1>
 
-<h3>Einnahmen hinzufügen</h3>
+<h2>Einnahmen</h2>
 
-<input type="text" id="incomeSource" placeholder="z.B. Gehalt, Kindergeld">
-<input type="number" step="0.01" id="incomeAmount" placeholder="Betrag €">
-<button onclick="addIncome()">Einnahme hinzufügen</button>
+<input id="incomeName" placeholder="z.B Gehalt / Kindergeld">
+<input id="incomeAmount" type="number" step="0.01" placeholder="Betrag €">
+<button onclick="addIncome()">Hinzufügen</button>
 
 <table>
 <thead>
 <tr>
 <th>Einnahme</th>
-<th>Betrag (€)</th>
+<th>Betrag €</th>
 <th>Aktion</th>
 </tr>
 </thead>
 <tbody id="incomeTable"></tbody>
 </table>
 
-<div id="incomeTotal">Gesamteinnahmen: 0 €</div>
 
-<h3>Budget-Limit (optional)</h3>
-<input type="number" step="0.01" id="budgetLimit" placeholder="z.B. 1500" oninput="updateAll()">
+<h2>Ausgaben</h2>
 
-<h3>Ausgabe hinzufügen</h3>
-<input type="text" id="category" placeholder="Kategorie">
-<input type="text" id="amount" placeholder="Betrag z.B. 12,99">
-<label><input type="checkbox" id="fixedCost"> Fixkosten</label>
-<button onclick="saveExpense()">Speichern</button>
+<input id="expenseName" placeholder="z.B Miete / Netflix">
+<input id="expenseAmount" type="number" step="0.01" placeholder="Betrag €">
+<button onclick="addExpense()">Hinzufügen</button>
 
 <table>
 <thead>
-<tr><th>Kategorie</th><th>Betrag (€)</th><th>Fix</th><th>%</th><th>Aktion</th></tr>
+<tr>
+<th>Ausgabe</th>
+<th>Betrag €</th>
+<th>Aktion</th>
+</tr>
 </thead>
 <tbody id="expenseTable"></tbody>
 </table>
 
-<div class="summary" id="summary"></div>
-<div class="warning" id="warning"></div>
 
-<h3>Ausgaben-Verteilung</h3>
-<canvas id="expenseChart"></canvas>
+<div class="summary">
 
-<h3>Jahresverlauf</h3>
-<canvas id="yearChart"></canvas>
+<p id="totalIncome">Gesamteinnahmen: 0 €</p>
+<p id="totalExpense">Gesamtausgaben: 0 €</p>
+<p id="balance">Übrig: 0 €</p>
 
 </div>
 
+<canvas id="chart"></canvas>
+
+</div>
+
+
 <script>
-let chart1, chart2;
-let currentMonth = document.getElementById("monthSelect").value;
-let editIndex = null;
 
-function parseAmount(v){ return parseFloat(v.replace(",", ".")); }
+let incomes=[]
+let expenses=[]
 
-function getMonthData(month){
- return JSON.parse(localStorage.getItem(month)) || {income:0, limit:0, expenses:[]};
+function addIncome(){
+
+let name=document.getElementById("incomeName").value
+let amount=parseFloat(document.getElementById("incomeAmount").value)
+
+if(!name||isNaN(amount))return
+
+incomes.push({name,amount})
+
+document.getElementById("incomeName").value=""
+document.getElementById("incomeAmount").value=""
+
+render()
 }
 
-function saveMonthData(month,data){
- localStorage.setItem(month,JSON.stringify(data));
+
+function addExpense(){
+
+let name=document.getElementById("expenseName").value
+let amount=parseFloat(document.getElementById("expenseAmount").value)
+
+if(!name||isNaN(amount))return
+
+expenses.push({name,amount})
+
+document.getElementById("expenseName").value=""
+document.getElementById("expenseAmount").value=""
+
+render()
 }
 
-function loadMonth(){
- currentMonth=document.getElementById("monthSelect").value;
- editIndex=null;
- updateAll();
-}
 
-function saveExpense(){
- let data=getMonthData(currentMonth);
- const cat=document.getElementById("category").value;
- const amt=parseAmount(document.getElementById("amount").value);
- const fixed=document.getElementById("fixedCost").checked;
- if(!cat||isNaN(amt)) return;
-
- if(editIndex!==null){
-  data.expenses[editIndex]={category:cat,amount:amt,fixed:fixed};
-  editIndex=null;
- } else {
-  data.expenses.push({category:cat,amount:amt,fixed:fixed});
- }
-
- saveMonthData(currentMonth,data);
- document.getElementById("category").value="";
- document.getElementById("amount").value="";
- document.getElementById("fixedCost").checked=false;
- updateAll();
-}
-
-function editExpense(i){
- let data=getMonthData(currentMonth);
- let e=data.expenses[i];
- document.getElementById("category").value=e.category;
- document.getElementById("amount").value=e.amount;
- document.getElementById("fixedCost").checked=e.fixed;
- editIndex=i;
+function deleteIncome(i){
+incomes.splice(i,1)
+render()
 }
 
 function deleteExpense(i){
- let data=getMonthData(currentMonth);
- data.expenses.splice(i,1);
- saveMonthData(currentMonth,data);
- updateAll();
+expenses.splice(i,1)
+render()
 }
 
-function updateAll(){
- let data=getMonthData(currentMonth);
- data.income=parseAmount(document.getElementById("income").value)||data.income;
- data.limit=parseAmount(document.getElementById("budgetLimit").value)||data.limit;
- saveMonthData(currentMonth,data);
 
- document.getElementById("income").value=data.income;
- document.getElementById("budgetLimit").value=data.limit;
+function editIncome(i){
 
- const total=data.expenses.reduce((s,e)=>s+e.amount,0);
- const fixedTotal=data.expenses.filter(e=>e.fixed).reduce((s,e)=>s+e.amount,0);
- const free=data.income-total;
+let newName=prompt("Neue Einnahme:",incomes[i].name)
+let newAmount=prompt("Neuer Betrag:",incomes[i].amount)
 
- const table=document.getElementById("expenseTable");
- table.innerHTML="";
- data.expenses.forEach((e,i)=>{
-  table.innerHTML+=`
-  <tr>
-  <td>${e.category}</td>
-  <td>${e.amount.toFixed(2)}</td>
-  <td>${e.fixed?"Ja":"Nein"}</td>
-  <td>${total>0?((e.amount/total)*100).toFixed(1):0}%</td>
-  <td>
-   <button onclick="editExpense(${i})">Bearbeiten</button>
-   <button onclick="deleteExpense(${i})">X</button>
-  </td>
-  </tr>`;
- });
-
- document.getElementById("summary").innerText=
- "Ausgaben: "+total.toFixed(2)+" € | Fixkosten: "+fixedTotal.toFixed(2)+" € | Frei: "+free.toFixed(2)+" €";
-
- if(data.limit>0 && total>data.limit){
-  document.getElementById("warning").innerText="⚠ Budget überschritten!";
- } else {
-  document.getElementById("warning").innerText="";
- }
-
- updateCharts();
- updateYearChart();
+if(newName&&newAmount){
+incomes[i].name=newName
+incomes[i].amount=parseFloat(newAmount)
 }
 
-function updateCharts(){
- let data=getMonthData(currentMonth);
- const total=data.expenses.reduce((s,e)=>s+e.amount,0);
+render()
 
- if(chart1)chart1.destroy();
-
- chart1=new Chart(document.getElementById("expenseChart"),{
-  type:'pie',
-  data:{labels:data.expenses.map(e=>e.category),
-  datasets:[{data:data.expenses.map(e=>e.amount)}]}
- });
 }
 
-function updateYearChart(){
- if(chart2)chart2.destroy();
- const months=["Januar","Februar","März","April","Mai","Juni",
- "Juli","August","September","Oktober","November","Dezember"];
- const values=months.map(m=>{
-  let d=getMonthData(m);
-  return d.expenses.reduce((s,e)=>s+e.amount,0);
- });
+function editExpense(i){
 
- chart2=new Chart(document.getElementById("yearChart"),{
-  type:'line',
-  data:{labels:months,datasets:[{label:"Ausgaben",data:values}]}
- });
+let newName=prompt("Neue Ausgabe:",expenses[i].name)
+let newAmount=prompt("Neuer Betrag:",expenses[i].amount)
+
+if(newName&&newAmount){
+expenses[i].name=newName
+expenses[i].amount=parseFloat(newAmount)
 }
 
-updateAll();
+render()
+
+}
+
+
+function render(){
+
+let incomeTable=document.getElementById("incomeTable")
+let expenseTable=document.getElementById("expenseTable")
+
+incomeTable.innerHTML=""
+expenseTable.innerHTML=""
+
+let totalIncome=0
+let totalExpense=0
+
+
+incomes.forEach((i,index)=>{
+
+totalIncome+=i.amount
+
+incomeTable.innerHTML+=`
+
+<tr>
+<td>${i.name}</td>
+<td>${i.amount.toFixed(2)}</td>
+<td>
+<button onclick="editIncome(${index})">Bearbeiten</button>
+<button onclick="deleteIncome(${index})">X</button>
+</td>
+</tr>
+
+`
+
+})
+
+
+expenses.forEach((e,index)=>{
+
+totalExpense+=e.amount
+
+expenseTable.innerHTML+=`
+
+<tr>
+<td>${e.name}</td>
+<td>${e.amount.toFixed(2)}</td>
+<td>
+<button onclick="editExpense(${index})">Bearbeiten</button>
+<button onclick="deleteExpense(${index})">X</button>
+</td>
+</tr>
+
+`
+
+})
+
+
+document.getElementById("totalIncome").innerText="Gesamteinnahmen: "+totalIncome.toFixed(2)+" €"
+document.getElementById("totalExpense").innerText="Gesamtausgaben: "+totalExpense.toFixed(2)+" €"
+document.getElementById("balance").innerText="Übrig: "+(totalIncome-totalExpense).toFixed(2)+" €"
+
+
+updateChart(totalIncome,totalExpense)
+
+}
+
+
+let chart
+
+function updateChart(income,expense){
+
+let ctx=document.getElementById("chart")
+
+if(chart) chart.destroy()
+
+chart=new Chart(ctx,{
+type:"pie",
+data:{
+labels:["Einnahmen","Ausgaben"],
+datasets:[{
+data:[income,expense]
+}]
+}
+})
+
+}
+
 </script>
 
 </body>
 </html>
-
-
