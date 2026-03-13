@@ -36,8 +36,24 @@ canvas { margin-top:20px;}
 <option>Oktober</option><option>November</option><option>Dezember</option>
 </select>
 
-<h3>Einnahmen</h3>
-<input type="number" step="0.01" id="income" placeholder="Monatliche Einnahmen" oninput="updateAll()">
+<h3>Einnahmen hinzufügen</h3>
+
+<input type="text" id="incomeSource" placeholder="z.B. Gehalt">
+<input type="text" id="incomeAmount" placeholder="Betrag">
+<button onclick="addIncome()">Einnahme hinzufügen</button>
+
+<table>
+<thead>
+<tr>
+<th>Einnahme</th>
+<th>Betrag (€)</th>
+<th>Aktion</th>
+</tr>
+</thead>
+<tbody id="incomeTable"></tbody>
+</table>
+
+<div id="incomeTotal"></div>
 
 <h3>Budget-Limit (optional)</h3>
 <input type="number" step="0.01" id="budgetLimit" placeholder="z.B. 1500" oninput="updateAll()">
@@ -199,3 +215,4 @@ updateAll();
 
 </body>
 </html>
+
