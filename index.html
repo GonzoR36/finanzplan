@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
 
 <meta charset="UTF-8">
@@ -19,9 +18,9 @@ background:#f4f4f4;
 }
 
 .container{
-padding:20px;
 max-width:900px;
 margin:auto;
+padding:20px;
 }
 
 h1{
@@ -29,17 +28,17 @@ text-align:center;
 }
 
 input,select{
+width:100%;
 padding:10px;
 margin:5px 0;
-width:100%;
 box-sizing:border-box;
 }
 
 button{
+width:100%;
 padding:10px;
 margin:5px 0;
 cursor:pointer;
-width:100%;
 }
 
 table{
@@ -54,54 +53,43 @@ padding:8px;
 text-align:center;
 }
 
-/* Menü Button */
+/* Menü */
 
 #menuButton{
 position:fixed;
 top:15px;
 left:15px;
-font-size:30px;
+font-size:28px;
 cursor:pointer;
-z-index:1100;
-background:white;
-padding:5px 10px;
-border-radius:5px;
-}
-/* Seiten Menü */
-
-#sideMenu{
-position:fixed;
-top:0;
-left:-260px;
-width:240px;
-height:100%;
-background:#2c3e50;
-color:white;
-padding:20px;
-transition:left 0.3s ease;
 z-index:1000;
 }
 
-#sideMenu a{
-display:block;
-color:white;
+#menuPopup{
+position:fixed;
+top:60px;
+left:15px;
+background:white;
+box-shadow:0px 5px 15px rgba(0,0,0,0.3);
+border-radius:10px;
+display:none;
+flex-direction:column;
+padding:10px;
+z-index:1000;
+}
+
+#menuPopup a{
 text-decoration:none;
-margin:15px 0;
-font-size:18px;
+color:black;
+padding:10px;
 }
 
-#sideMenu a:hover{
-opacity:0.7;
+#menuPopup a:hover{
+background:#eee;
+border-radius:5px;
 }
 
-/* Handy Layout */
-
-@media (max-width:700px){
-
-.container{
-padding:15px;
-}
-
+canvas{
+margin-top:20px;
 }
 
 </style>
@@ -110,11 +98,9 @@ padding:15px;
 
 <body>
 
-<div id="menuButton" onclick="toggleMenu()">☰</div>
+<div id="menuButton">☰</div>
 
-<div id="sideMenu">
-
-<h3>Menü</h3>
+<div id="menuPopup">
 
 <a href="#">Dashboard</a>
 <a href="#">Einnahmen</a>
@@ -213,17 +199,20 @@ let incomes=[]
 let expenses=[]
 let chart
 
-function toggleMenu(){
+let menuButton=document.getElementById("menuButton")
+let menuPopup=document.getElementById("menuPopup")
 
-let menu=document.getElementById("sideMenu")
+menuButton.onclick=function(){
 
-if(menu.style.left==="0px"){
-menu.style.left="-260px"
+if(menuPopup.style.display==="flex"){
+menuPopup.style.display="none"
 }else{
-menu.style.left="0px"
+menuPopup.style.display="flex"
 }
 
 }
+
+/* Einnahmen hinzufügen */
 
 function addIncome(){
 
@@ -239,6 +228,8 @@ render()
 
 }
 
+/* Ausgaben hinzufügen */
+
 function addExpense(){
 
 let name=document.getElementById("expenseName").value
@@ -252,6 +243,8 @@ saveData()
 render()
 
 }
+
+/* löschen */
 
 function deleteIncome(i){
 
@@ -270,6 +263,8 @@ saveData()
 render()
 
 }
+
+/* bearbeiten */
 
 function editIncome(i){
 
@@ -304,6 +299,8 @@ saveData()
 render()
 
 }
+
+/* Anzeige */
 
 function render(){
 
@@ -358,6 +355,8 @@ updateChart(totalIncome,totalExpense)
 
 }
 
+/* Diagramm */
+
 function updateChart(income,expense){
 
 let type=document.getElementById("chartType").value
@@ -379,12 +378,16 @@ data:[income,expense]
 
 }
 
+/* Speicherung */
+
 function saveData(){
 
 localStorage.setItem("incomes",JSON.stringify(incomes))
 localStorage.setItem("expenses",JSON.stringify(expenses))
 
 }
+
+/* Laden */
 
 function loadData(){
 
