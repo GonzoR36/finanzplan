@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
 
 <meta charset="UTF-8">
@@ -28,13 +29,17 @@ text-align:center;
 }
 
 input,select{
-padding:8px;
-margin:5px;
+padding:10px;
+margin:5px 0;
+width:100%;
+box-sizing:border-box;
 }
 
 button{
-padding:8px 12px;
+padding:10px;
+margin:5px 0;
 cursor:pointer;
+width:100%;
 }
 
 table{
@@ -49,7 +54,7 @@ padding:8px;
 text-align:center;
 }
 
-/* Menü */
+/* Menü Button */
 
 #menuButton{
 position:fixed;
@@ -57,19 +62,22 @@ top:15px;
 left:15px;
 font-size:28px;
 cursor:pointer;
-z-index:1000;
+z-index:1001;
 }
+
+/* Seiten Menü */
 
 #sideMenu{
 position:fixed;
-left:-220px;
 top:0;
-width:220px;
+left:-260px;
+width:240px;
 height:100%;
 background:#2c3e50;
 color:white;
 padding:20px;
-transition:0.3s;
+transition:left 0.3s ease;
+z-index:1000;
 }
 
 #sideMenu a{
@@ -77,14 +85,19 @@ display:block;
 color:white;
 text-decoration:none;
 margin:15px 0;
+font-size:18px;
 }
 
-/* Handy */
+#sideMenu a:hover{
+opacity:0.7;
+}
+
+/* Handy Layout */
 
 @media (max-width:700px){
 
-input,button{
-width:100%;
+.container{
+padding:15px;
 }
 
 }
@@ -98,11 +111,14 @@ width:100%;
 <div id="menuButton" onclick="toggleMenu()">☰</div>
 
 <div id="sideMenu">
+
 <h3>Menü</h3>
+
 <a href="#">Dashboard</a>
 <a href="#">Einnahmen</a>
 <a href="#">Ausgaben</a>
 <a href="#">Analyse</a>
+
 </div>
 
 <div class="container">
@@ -112,6 +128,7 @@ width:100%;
 <h2>Monat auswählen</h2>
 
 <select id="monthSelect">
+
 <option>Januar</option>
 <option>Februar</option>
 <option>März</option>
@@ -124,12 +141,13 @@ width:100%;
 <option>Oktober</option>
 <option>November</option>
 <option>Dezember</option>
-</select>
 
+</select>
 
 <h2>Einnahmen</h2>
 
 <input id="incomeName" placeholder="Quelle">
+
 <input id="incomeAmount" type="number" step="0.01" placeholder="Betrag">
 
 <button onclick="addIncome()">Hinzufügen</button>
@@ -148,10 +166,10 @@ width:100%;
 
 </table>
 
-
 <h2>Ausgaben</h2>
 
 <input id="expenseName" placeholder="Kategorie">
+
 <input id="expenseAmount" type="number" step="0.01" placeholder="Betrag">
 
 <button onclick="addExpense()">Hinzufügen</button>
@@ -170,7 +188,6 @@ width:100%;
 
 </table>
 
-
 <h2>Diagramm</h2>
 
 <select id="chartType" onchange="render()">
@@ -180,7 +197,6 @@ width:100%;
 
 <canvas id="chart"></canvas>
 
-
 <h2>Bilanz</h2>
 
 <p id="totalIncome">Einnahmen: 0 €</p>
@@ -189,26 +205,23 @@ width:100%;
 
 </div>
 
-
 <script>
 
 let incomes=[]
 let expenses=[]
 let chart
 
-
 function toggleMenu(){
 
 let menu=document.getElementById("sideMenu")
 
 if(menu.style.left==="0px"){
-menu.style.left="-220px"
+menu.style.left="-260px"
 }else{
 menu.style.left="0px"
 }
 
 }
-
 
 function addIncome(){
 
@@ -220,11 +233,9 @@ if(!name || isNaN(amount)) return
 incomes.push({name,amount})
 
 saveData()
-
 render()
 
 }
-
 
 function addExpense(){
 
@@ -236,33 +247,27 @@ if(!name || isNaN(amount)) return
 expenses.push({name,amount})
 
 saveData()
-
 render()
 
 }
-
 
 function deleteIncome(i){
 
 incomes.splice(i,1)
 
 saveData()
-
 render()
 
 }
-
 
 function deleteExpense(i){
 
 expenses.splice(i,1)
 
 saveData()
-
 render()
 
 }
-
 
 function editIncome(i){
 
@@ -277,11 +282,9 @@ incomes[i].amount=parseFloat(newAmount)
 }
 
 saveData()
-
 render()
 
 }
-
 
 function editExpense(i){
 
@@ -296,11 +299,9 @@ expenses[i].amount=parseFloat(newAmount)
 }
 
 saveData()
-
 render()
 
 }
-
 
 function render(){
 
@@ -312,7 +313,6 @@ expenseTable.innerHTML=""
 
 let totalIncome=0
 let totalExpense=0
-
 
 incomes.forEach((i,index)=>{
 
@@ -331,7 +331,6 @@ incomeTable.innerHTML+=`
 
 })
 
-
 expenses.forEach((e,index)=>{
 
 totalExpense+=e.amount
@@ -349,16 +348,13 @@ expenseTable.innerHTML+=`
 
 })
 
-
 document.getElementById("totalIncome").innerText="Einnahmen: "+totalIncome.toFixed(2)+" €"
 document.getElementById("totalExpense").innerText="Ausgaben: "+totalExpense.toFixed(2)+" €"
 document.getElementById("balance").innerText="Übrig: "+(totalIncome-totalExpense).toFixed(2)+" €"
 
-
 updateChart(totalIncome,totalExpense)
 
 }
-
 
 function updateChart(income,expense){
 
@@ -381,14 +377,12 @@ data:[income,expense]
 
 }
 
-
 function saveData(){
 
 localStorage.setItem("incomes",JSON.stringify(incomes))
 localStorage.setItem("expenses",JSON.stringify(expenses))
 
 }
-
 
 function loadData(){
 
@@ -406,7 +400,6 @@ expenses=JSON.parse(savedExpenses)
 render()
 
 }
-
 
 loadData()
 
