@@ -1,33 +1,39 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device=width, initial-scale=1.0">
-<title>Beta Finanzplan</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Finanzplan</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<Style>
+<style>
+
 body{
-front-family:Arial;
+font-family:Arial;
 margin:0;
 background:#f4f4f4;
-h1{
-text-align:center;
 }
 
 .container{
 padding:20px;
+max-width:900px;
+margin:auto;
 }
 
-input{
+h1{
+text-align:center;
+}
+
+input,select{
 padding:8px;
 margin:5px;
 }
 
 button{
 padding:8px 12px;
-margin:5px;
 cursor:pointer;
 }
 
@@ -43,48 +49,62 @@ padding:8px;
 text-align:center;
 }
 
-#menubutton{
+/* Menü */
+
+#menuButton{
 position:fixed;
 top:15px;
 left:15px;
-front-size:28px;
+font-size:28px;
 cursor:pointer;
 z-index:1000;
 }
 
-#sidemenu{
+#sideMenu{
 position:fixed;
 left:-220px;
 top:0;
-widht:220px;
+width:220px;
 height:100%;
 background:#2c3e50;
 color:white;
 padding:20px;
 transition:0.3s;
 }
-#sidemenu a{
+
+#sideMenu a{
 display:block;
 color:white;
 text-decoration:none;
 margin:15px 0;
 }
 
-@media (max-widht:700px){
-input{
-widht:100%;
+/* Handy */
+
+@media (max-width:700px){
+
+input,button{
+width:100%;
 }
 
 }
 
 </style>
+
 </head>
+
 <body>
-<div id="menuButton" onclick="toggleMenu()"=</div>
+
+<div id="menuButton" onclick="toggleMenu()">☰</div>
+
 <div id="sideMenu">
 <h3>Menü</h3>
-
+<a href="#">Dashboard</a>
+<a href="#">Einnahmen</a>
+<a href="#">Ausgaben</a>
+<a href="#">Analyse</a>
 </div>
+
 <div class="container">
 
 <h1>Finanzplan</h1>
@@ -106,47 +126,261 @@ widht:100%;
 <option>Dezember</option>
 </select>
 
-<h2>Einnahmen</h2>
-<input id="incomeName" placeholder="Quelle (z.B Gehalt)">
-<input id="incomeAmount" type="number" step="0.01" placeholder="Betrag">
-<button onclick="addIncome()">Hinzufügen</button>
-<table id="incomeTable">
 
+<h2>Einnahmen</h2>
+
+<input id="incomeName" placeholder="Quelle">
+<input id="incomeAmount" type="number" step="0.01" placeholder="Betrag">
+
+<button onclick="addIncome()">Hinzufügen</button>
+
+<table>
+
+<thead>
 <tr>
 <th>Quelle</th>
 <th>Betrag</th>
+<th>Aktion</th>
 </tr>
+</thead>
+
+<tbody id="incomeTable"></tbody>
+
 </table>
-<button onclick="editExpense(§{i}">Bearbeiten</button>
-<button onclick="deleteExpense(§{i})">X</button>
+
+
 <h2>Ausgaben</h2>
 
 <input id="expenseName" placeholder="Kategorie">
 <input id="expenseAmount" type="number" step="0.01" placeholder="Betrag">
-<table id="expenseTable">
+
+<button onclick="addExpense()">Hinzufügen</button>
+
+<table>
+
+<thead>
 <tr>
 <th>Kategorie</th>
 <th>Betrag</th>
+<th>Aktion</th>
 </tr>
+</thead>
+
+<tbody id="expenseTable"></tbody>
+
 </table>
 
+
 <h2>Diagramm</h2>
+
+<select id="chartType" onchange="render()">
+<option value="pie">Kreisdiagramm</option>
+<option value="bar">Balkendiagramm</option>
+</select>
+
+<canvas id="chart"></canvas>
+
 
 <h2>Bilanz</h2>
 
 <p id="totalIncome">Einnahmen: 0 €</p>
 <p id="totalExpense">Ausgaben: 0 €</p>
 <p id="balance">Übrig: 0 €</p>
-  
-<select id="chartType" onchange="updateChart()">
 
-<option value="pie"><Kreisdiagramm</option>
-<option value="bar"Balkendiagramm</option>
-
-</select>
 </div>
 
+
 <script>
+
+let incomes=[]
+let expenses=[]
+let chart
+
+
+function toggleMenu(){
+
+let menu=document.getElementById("sideMenu")
+
+if(menu.style.left==="0px"){
+menu.style.left="-220px"
+}else{
+menu.style.left="0px"
+}
+
+}
+
+
+function addIncome(){
+
+let name=document.getElementById("incomeName").value
+let amount=parseFloat(document.getElementById("incomeAmount").value)
+
+if(!name || isNaN(amount)) return
+
+incomes.push({name,amount})
+
+saveData()
+
+render()
+
+}
+
+
+function addExpense(){
+
+let name=document.getElementById("expenseName").value
+let amount=parseFloat(document.getElementById("expenseAmount").value)
+
+if(!name || isNaN(amount)) return
+
+expenses.push({name,amount})
+
+saveData()
+
+render()
+
+}
+
+
+function deleteIncome(i){
+
+incomes.splice(i,1)
+
+saveData()
+
+render()
+
+}
+
+
+function deleteExpense(i){
+
+expenses.splice(i,1)
+
+saveData()
+
+render()
+
+}
+
+
+function editIncome(i){
+
+let newName=prompt("Neue Einnahme:",incomes[i].name)
+let newAmount=prompt("Neuer Betrag:",incomes[i].amount)
+
+if(newName && newAmount){
+
+incomes[i].name=newName
+incomes[i].amount=parseFloat(newAmount)
+
+}
+
+saveData()
+
+render()
+
+}
+
+
+function editExpense(i){
+
+let newName=prompt("Neue Kategorie:",expenses[i].name)
+let newAmount=prompt("Neuer Betrag:",expenses[i].amount)
+
+if(newName && newAmount){
+
+expenses[i].name=newName
+expenses[i].amount=parseFloat(newAmount)
+
+}
+
+saveData()
+
+render()
+
+}
+
+
+function render(){
+
+let incomeTable=document.getElementById("incomeTable")
+let expenseTable=document.getElementById("expenseTable")
+
+incomeTable.innerHTML=""
+expenseTable.innerHTML=""
+
+let totalIncome=0
+let totalExpense=0
+
+
+incomes.forEach((i,index)=>{
+
+totalIncome+=i.amount
+
+incomeTable.innerHTML+=`
+<tr>
+<td>${i.name}</td>
+<td>${i.amount.toFixed(2)} €</td>
+<td>
+<button onclick="editIncome(${index})">✏️</button>
+<button onclick="deleteIncome(${index})">❌</button>
+</td>
+</tr>
+`
+
+})
+
+
+expenses.forEach((e,index)=>{
+
+totalExpense+=e.amount
+
+expenseTable.innerHTML+=`
+<tr>
+<td>${e.name}</td>
+<td>${e.amount.toFixed(2)} €</td>
+<td>
+<button onclick="editExpense(${index})">✏️</button>
+<button onclick="deleteExpense(${index})">❌</button>
+</td>
+</tr>
+`
+
+})
+
+
+document.getElementById("totalIncome").innerText="Einnahmen: "+totalIncome.toFixed(2)+" €"
+document.getElementById("totalExpense").innerText="Ausgaben: "+totalExpense.toFixed(2)+" €"
+document.getElementById("balance").innerText="Übrig: "+(totalIncome-totalExpense).toFixed(2)+" €"
+
+
+updateChart(totalIncome,totalExpense)
+
+}
+
+
+function updateChart(income,expense){
+
+let type=document.getElementById("chartType").value
+
+if(chart) chart.destroy()
+
+chart=new Chart(document.getElementById("chart"),{
+
+type:type,
+
+data:{
+labels:["Einnahmen","Ausgaben"],
+datasets:[{
+data:[income,expense]
+}]
+}
+
+})
+
+}
+
 
 function saveData(){
 
@@ -154,6 +388,7 @@ localStorage.setItem("incomes",JSON.stringify(incomes))
 localStorage.setItem("expenses",JSON.stringify(expenses))
 
 }
+
 
 function loadData(){
 
@@ -168,115 +403,14 @@ if(savedExpenses){
 expenses=JSON.parse(savedExpenses)
 }
 
-}
-
-let incomes=[]
-let expenses=[]
-let chart
-
-function toggleMenu(){
-
-let menu=document.getElementById("sideMenu")
-
-if(menu.style.left==="0px"){
-menu.style.left="-220px"
-}else{
-menu.style.left="0px"
-}
+render()
 
 }
 
-function addIncome(){
 
-let name=document.getElementById("incomeName").value
-let amount=parseFloat(document.getElementById("incomeAmount").value)
-
-if(!name || !amount) return
-
-incomes.push({name,amount})
-
-let table=document.getElementById("incomeTable")
-
-let row=table.insertRow()
-
-row.insertCell(0).innerText=name
-row.insertCell(1).innerText=amount+" €"
-
-let incomeTotal=0
-let expenseTotal=0
-
-incomes.forEach(i=>{
-incomeTotal+=i.amount
-})
-
-expenses.forEach(e=>{
-expenseTotal+=e.amount
-})
-
-let type=document.getElementById("chartType").value
-
-if(chart) chart.destroy()
-
-chart=new Chart(document.getElementById("chart"),{
-
-type:type,
-
-data:{
-labels:["Einnahmen","Ausgaben"],
-datasets:[{
-data:[incomeTotal,expenseTotal]
-}]
-}
-
-})
-
-}
-
-function addExpense(){
-
-let name=document.getElementById("expenseName").value
-let amount=parseFloat(document.getElementById("expenseAmount").value)
-
-if(!name || !amount) return
-
-expenses.push({name,amount})
-
-let table=document.getElementById("expenseTable")
-
-let row=table.insertRow()
-
-row.insertCell(0).innerText=name
-row.insertCell(1).innerText=amount+" €"
-
-updateChart()
-
-}
-
-function updateChart(){
-
-let labels=expenses.map(e=>e.name)
-let data=expenses.map(e=>e.amount)
-
-let type=document.getElementById("chartType").value
-
-if(chart) chart.destroy()
-
-chart=new Chart(document.getElementById("chart"),{
-
-type:type,
-
-data:{
-labels:labels,
-datasets:[{
-label:"Ausgaben",
-data:data
-}]
-}
-
-})
-
-}
+loadData()
 
 </script>
 
+</body>
 </html>
