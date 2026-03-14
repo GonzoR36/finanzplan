@@ -2,59 +2,22 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Mein Finanzplan</title>
+<meta name="viewport" content="width=device=width, initial-scale=1.0">
+<title>Beta Finanzplan</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<style>
-#menuButton{
-position:fixed;
-top:15px;
-left:15px;
-font-size:28px;
-cursor:pointer;
-z-index:1000;
-}
-
-#sideMenu{
-position:fixed;
-left:-220px;
-top:0;
-width:220px;
-height:100%;
-background:#2c3e50;
-color:white;
-padding:20px;
-transition:0.3s;
-}
-
-#sideMenu a{
-display:block;
-color:white;
-text-decoration:none;
-margin:15px 0;
-}
-
-#sideMenu a:hover{
-text-decoration:underline;
-}
+<Style>
 body{
-font-family:Arial;
-background:#f4f6f9;
-margin:40px;
-}
-
+front-family:Arial;
+margin:0;
+background:#f4f4f4;
 h1{
 text-align:center;
 }
 
 .container{
-max-width:900px;
-margin:auto;
-background:white;
-padding:25px;
-border-radius:10px;
-box-shadow:0 0 10px rgba(0,0,0,0.1);
+padding:20px;
 }
 
 input{
@@ -75,106 +38,140 @@ margin-top:10px;
 }
 
 th,td{
-border:1px solid #ddd;
+border:1px solid #ccc;
 padding:8px;
 text-align:center;
 }
 
-th{
-background:#eee;
+#menubutton{
+position:fixed;
+top:15px;
+left:15px;
+front-size:28px;
+cursor:pointer;
+z-index:1000;
 }
 
-.summary{
-margin-top:20px;
-font-size:18px;
+#sidemenu{
+position:fixed;
+left:-220px;
+top:0;
+widht:220px;
+height:100%;
+background:#2c3e50;
+color:white;
+padding:20px;
+transition:0.3s;
+}
+#sidemenu a{
+display:block;
+color:white;
+text-decoration:none;
+margin:15px 0;
 }
 
-canvas{
-margin-top:30px;
+@media (max-widht:700px){
+input{
+widht:100%;
+}
+
 }
 
 </style>
 </head>
-
 <body>
-<div id="menuButton" onclick="toggleMenu()">=</div>
+<div id="menuButton" onclick="toggleMenu()"=</div>
 <div id="sideMenu">
 <h3>Menü</h3>
-<a href="#">Dashboard</a>
-<a href="#">Einnahmen</a>
-<a href="#">Ausgaben</a>
-<a href="#">Analyse</a>
-</div>
 
+</div>
 <div class="container">
 
-<h1>Mein Finanzplan</h1>
-<label>Monat:</label>
-<select id="monthSelect"
-onchange="loadMonth()">
-<option>Januar</
-option><option>Februar</
-option><option>März</
-option><option>April</option><option>Mai</
-option><option>Juni</
-option><option>Juli</option><option>August</
-option><option>September</option><option>Oktober</
-option><option>November</
-option><option>Dezember</option>
+<h1>Finanzplan</h1>
+
+<h2>Monat auswählen</h2>
+
+<select id="monthSelect">
+<option>Januar</option>
+<option>Februar</option>
+<option>März</option>
+<option>April</option>
+<option>Mai</option>
+<option>Juni</option>
+<option>Juli</option>
+<option>August</option>
+<option>September</option>
+<option>Oktober</option>
+<option>November</option>
+<option>Dezember</option>
 </select>
+
 <h2>Einnahmen</h2>
-
-<input id="incomeName" placeholder="z.B Gehalt / Kindergeld">
-<input id="incomeAmount" type="number" step="0.01" placeholder="Betrag €">
+<input id="incomeName" placeholder="Quelle (z.B Gehalt)">
+<input id="incomeAmount" type="number" step="0.01" placeholder="Betrag">
 <button onclick="addIncome()">Hinzufügen</button>
+<table id="incomeTable">
 
-<table>
-<thead>
 <tr>
-<th>Einnahme</th>
-<th>Betrag €</th>
-<th>Aktion</th>
+<th>Quelle</th>
+<th>Betrag</th>
 </tr>
-</thead>
-<tbody id="incomeTable"></tbody>
 </table>
-
-<h3>Budget-Limit (optional)</h3>
-<input type="number" step="0.01" id="budgetLimit" placeholder="z.B. 1500" oninput="updateAll()">
-
-  
 <h2>Ausgaben</h2>
 
-<input id="expenseName" placeholder="z.B Miete / Netflix">
-<input id="expenseAmount" type="number" step="0.01" placeholder="Betrag €">
-<button onclick="addExpense()">Hinzufügen</button>
-
-<table>
-<thead>
+<input id="expenseName" placeholder="Kategorie">
+<input id="expenseAmount" type="number" step="0.01" placeholder="Betrag">
+<table id="expenseTable">
 <tr>
-<th>Ausgabe</th>
-<th>Betrag €</th>
-<th>Aktion</th>
+<th>Kategorie</th>
+<th>Betrag</th>
 </tr>
-</thead>
-<tbody id="expenseTable"></tbody>
 </table>
 
+<h2>Diagramm</h2>
 
-<div class="summary">
+<h2>Bilanz</h2>
 
-<p id="totalIncome">Gesamteinnahmen: 0 €</p>
-<p id="totalExpense">Gesamtausgaben: 0 €</p>
+<p id="totalIncome">Einnahmen: 0 €</p>
+<p id="totalExpense">Ausgaben: 0 €</p>
 <p id="balance">Übrig: 0 €</p>
+  
+<select id="chartType" onchange="updateChart()">
 
+<option value="pie"><Kreisdiagramm</option>
+<option value="bar"Balkendiagramm</option>
+
+</select>
 </div>
-
-<canvas id="chart"></canvas>
-
-</div>
-
 
 <script>
+
+function saveData(){
+
+localStorage.setItem("incomes",JSON.stringify(incomes))
+localStorage.setItem("expenses",JSON.stringify(expenses))
+
+}
+
+function loadData(){
+
+let savedIncomes=localStorage.getItem("incomes")
+let savedExpenses=localStorage.getItem("expenses")
+
+if(savedIncomes){
+incomes=JSON.parse(savedIncomes)
+}
+
+if(savedExpenses){
+expenses=JSON.parse(savedExpenses)
+}
+
+}
+
+let incomes=[]
+let expenses=[]
+let chart
+
 function toggleMenu(){
 
 let menu=document.getElementById("sideMenu")
@@ -187,165 +184,97 @@ menu.style.left="0px"
 
 }
 
-let incomes=[]
-let expenses=[]
-
 function addIncome(){
 
 let name=document.getElementById("incomeName").value
 let amount=parseFloat(document.getElementById("incomeAmount").value)
 
-if(!name||isNaN(amount))return
+if(!name || !amount) return
 
 incomes.push({name,amount})
 
-document.getElementById("incomeName").value=""
-document.getElementById("incomeAmount").value=""
+let table=document.getElementById("incomeTable")
 
-render()
+let row=table.insertRow()
+
+row.insertCell(0).innerText=name
+row.insertCell(1).innerText=amount+" €"
+
+let incomeTotal=0
+let expenseTotal=0
+
+incomes.forEach(i=>{
+incomeTotal+=i.amount
+})
+
+expenses.forEach(e=>{
+expenseTotal+=e.amount
+})
+
+let type=document.getElementById("chartType").value
+
+if(chart) chart.destroy()
+
+chart=new Chart(document.getElementById("chart"),{
+
+type:type,
+
+data:{
+labels:["Einnahmen","Ausgaben"],
+datasets:[{
+data:[incomeTotal,expenseTotal]
+}]
 }
 
+})
+
+}
 
 function addExpense(){
 
 let name=document.getElementById("expenseName").value
 let amount=parseFloat(document.getElementById("expenseAmount").value)
 
-if(!name||isNaN(amount))return
+if(!name || !amount) return
 
 expenses.push({name,amount})
 
-document.getElementById("expenseName").value=""
-document.getElementById("expenseAmount").value=""
+let table=document.getElementById("expenseTable")
 
-render()
-}
+let row=table.insertRow()
 
+row.insertCell(0).innerText=name
+row.insertCell(1).innerText=amount+" €"
 
-function deleteIncome(i){
-incomes.splice(i,1)
-render()
-}
-
-function deleteExpense(i){
-expenses.splice(i,1)
-render()
-}
-
-
-function editIncome(i){
-
-let newName=prompt("Neue Einnahme:",incomes[i].name)
-let newAmount=prompt("Neuer Betrag:",incomes[i].amount)
-
-if(newName&&newAmount){
-incomes[i].name=newName
-incomes[i].amount=parseFloat(newAmount)
-}
-
-render()
+updateChart()
 
 }
 
-function editExpense(i){
+function updateChart(){
 
-let newName=prompt("Neue Ausgabe:",expenses[i].name)
-let newAmount=prompt("Neuer Betrag:",expenses[i].amount)
+let labels=expenses.map(e=>e.name)
+let data=expenses.map(e=>e.amount)
 
-if(newName&&newAmount){
-expenses[i].name=newName
-expenses[i].amount=parseFloat(newAmount)
-}
-
-render()
-
-}
-
-
-function render(){
-
-let incomeTable=document.getElementById("incomeTable")
-let expenseTable=document.getElementById("expenseTable")
-
-incomeTable.innerHTML=""
-expenseTable.innerHTML=""
-
-let totalIncome=0
-let totalExpense=0
-
-
-incomes.forEach((i,index)=>{
-
-totalIncome+=i.amount
-
-incomeTable.innerHTML+=`
-
-<tr>
-<td>${i.name}</td>
-<td>${i.amount.toFixed(2)}</td>
-<td>
-<button onclick="editIncome(${index})">Bearbeiten</button>
-<button onclick="deleteIncome(${index})">X</button>
-</td>
-</tr>
-
-`
-
-})
-
-
-expenses.forEach((e,index)=>{
-
-totalExpense+=e.amount
-
-expenseTable.innerHTML+=`
-
-<tr>
-<td>${e.name}</td>
-<td>${e.amount.toFixed(2)}</td>
-<td>
-<button onclick="editExpense(${index})">Bearbeiten</button>
-<button onclick="deleteExpense(${index})">X</button>
-</td>
-</tr>
-
-`
-
-})
-
-
-document.getElementById("totalIncome").innerText="Gesamteinnahmen: "+totalIncome.toFixed(2)+" €"
-document.getElementById("totalExpense").innerText="Gesamtausgaben: "+totalExpense.toFixed(2)+" €"
-document.getElementById("balance").innerText="Übrig: "+(totalIncome-totalExpense).toFixed(2)+" €"
-
-
-updateChart(totalIncome,totalExpense)
-
-}
-
-
-let chart
-
-function updateChart(income,expense){
-
-let ctx=document.getElementById("chart")
+let type=document.getElementById("chartType").value
 
 if(chart) chart.destroy()
 
-chart=new Chart(ctx,{
-type:"pie",
+chart=new Chart(document.getElementById("chart"),{
+
+type:type,
+
 data:{
-labels:["Einnahmen","Ausgaben"],
+labels:labels,
 datasets:[{
-data:[income,expense]
+label:"Ausgaben",
+data:data
 }]
 }
+
 })
 
 }
 
 </script>
 
-</body>
 </html>
-
