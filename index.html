@@ -7,7 +7,37 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
+#menuButton{
+position:fixed;
+top:15px;
+left:15px;
+font-size:28px;
+cursor:pointer;
+z-index:1000;
+}
 
+#sideMenu{
+position:fixed;
+left:-220px;
+top:0;
+width:220px;
+height:100%;
+background:#2c3e50;
+color:white;
+padding:20px;
+transition:0.3s;
+}
+
+#sideMenu a{
+display:block;
+color:white;
+text-decoration:none;
+margin:15px 0;
+}
+
+#sideMenu a:hover{
+text-decoration:underline;
+}
 body{
 font-family:Arial;
 background:#f4f6f9;
@@ -67,6 +97,14 @@ margin-top:30px;
 </head>
 
 <body>
+<div id="menuButton" onclick="toggleMenu()">=</div>
+<div id="sideMenu">
+<h3>Menü</h3>
+<a href="#">Dashboard</a>
+<a href="#">Einnahmen</a>
+<a href="#">Ausgaben</a>
+<a href="#">Analyse</a>
+</div>
 
 <div class="container">
 
@@ -137,6 +175,17 @@ option><option>Dezember</option>
 
 
 <script>
+function toggleMenu(){
+
+let menu=document.getElementById("sideMenu")
+
+if(menu.style.left==="0px"){
+menu.style.left="-220px"
+}else{
+menu.style.left="0px"
+}
+
+}
 
 let incomes=[]
 let expenses=[]
