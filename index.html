@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -11,103 +10,358 @@
 
 <style>
 
+*{
+    box-sizing:border-box;
+}
+
 body{
-font-family:Arial;
-margin:0;
-background:#f4f4f4;
+    font-family:Arial, sans-serif;
+    margin:0;
+    background:#f4f4f4;
+    color:#222;
+}
+
+button,
+input,
+select{
+    font-family:inherit;
 }
 
 .container{
-max-width:900px;
-margin:auto;
-padding:20px;
+    max-width:950px;
+    margin:auto;
+    padding:20px;
 }
 
 h1{
-text-align:center;
+    text-align:center;
+    margin-top:10px;
 }
 
-input,select{
-width:100%;
-padding:10px;
-margin:5px 0;
-box-sizing:border-box;
+h2{
+    margin-top:30px;
 }
 
-button{
-width:100%;
-padding:10px;
-margin:5px 0;
-cursor:pointer;
+h3{
+    margin-top:20px;
 }
 
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:10px;
-}
-
-th,td{
-border:1px solid #ccc;
-padding:8px;
-text-align:center;
-}
-
-/* Menü */
+/* =========================
+   MENÜ
+========================= */
 
 #menuButton{
-position:fixed;
-top:15px;
-left:15px;
-font-size:28px;
-cursor:pointer;
-z-index:1000;
+    position:fixed;
+    top:15px;
+    left:15px;
+    font-size:30px;
+    cursor:pointer;
+    z-index:1000;
+    background:white;
+    width:48px;
+    height:48px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
 }
 
 #menuPopup{
-position:fixed;
-top:60px;
-left:15px;
-background:white;
-box-shadow:0px 5px 15px rgba(0,0,0,0.3);
-border-radius:10px;
-display:none;
-flex-direction:column;
-padding:10px;
-z-index:1000;
+    position:fixed;
+    top:70px;
+    left:15px;
+    background:white;
+    box-shadow:0 5px 20px rgba(0,0,0,0.25);
+    border-radius:12px;
+    display:none;
+    flex-direction:column;
+    padding:10px;
+    z-index:1000;
+    min-width:230px;
 }
 
-#menuPopup a{
-text-decoration:none;
-color:black;
-padding:10px;
+#menuPopup button{
+    border:none;
+    background:white;
+    text-align:left;
+    padding:13px;
+    margin:2px 0;
+    cursor:pointer;
+    font-size:16px;
+    border-radius:8px;
 }
 
-#menuPopup a:hover{
-background:#eee;
-border-radius:5px;
+#menuPopup button:hover{
+    background:#eee;
 }
 
-canvas{
-margin-top:20px;
+/* =========================
+   SEITEN
+========================= */
+
+.page{
+    display:none;
+}
+
+.page.active{
+    display:block;
+}
+
+/* =========================
+   FORMULARE
+========================= */
+
+input,
+select{
+    width:100%;
+    padding:12px;
+    margin:5px 0 10px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:white;
+}
+
+button.mainButton{
+    width:100%;
+    padding:12px;
+    margin:5px 0;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#222;
+    color:white;
+    font-size:16px;
+}
+
+button.mainButton:hover{
+    opacity:0.85;
+}
+
+/* =========================
+   TABELLEN
+========================= */
+
+.tableWrapper{
+    width:100%;
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+    background:white;
+}
+
+th,
+td{
+    border:1px solid #ccc;
+    padding:9px;
+    text-align:center;
+}
+
+th{
+    background:#eee;
+}
+
+/* =========================
+   KARTEN
+========================= */
+
+.card{
+    background:white;
+    border-radius:12px;
+    padding:18px;
+    margin:15px 0;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+}
+
+.summary{
+    background:white;
+    border-radius:12px;
+    padding:15px;
+    margin:10px 0;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.summary p{
+    margin:8px 0;
+    font-size:17px;
+}
+
+/* =========================
+   KREDIT
+========================= */
+
+.creditCard{
+    background:white;
+    border-radius:12px;
+    padding:16px;
+    margin:12px 0;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+}
+
+.creditCard h3{
+    margin-top:0;
+}
+
+.creditButtons{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+}
+
+.smallButton{
+    border:none;
+    border-radius:7px;
+    padding:9px 12px;
+    cursor:pointer;
+    background:#eee;
+}
+
+.smallButton:hover{
+    background:#ddd;
+}
+
+.creditStats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    margin:15px 0;
+}
+
+.statBox{
+    background:#f4f4f4;
+    padding:12px;
+    border-radius:8px;
+}
+
+.statBox strong{
+    display:block;
+    margin-top:5px;
+    font-size:17px;
+}
+
+.warning{
+    background:#fff3cd;
+    border:1px solid #ffe69c;
+    padding:12px;
+    border-radius:8px;
+    margin:12px 0;
+}
+
+.info{
+    background:#e7f1ff;
+    border:1px solid #b8d4ff;
+    padding:12px;
+    border-radius:8px;
+    margin:12px 0;
+}
+
+/* =========================
+   DIAGRAMM
+========================= */
+
+.chartBox{
+    background:white;
+    padding:15px;
+    border-radius:12px;
+    margin-top:20px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px){
+
+    .container{
+        padding:15px;
+        padding-top:75px;
+    }
+
+    h1{
+        font-size:26px;
+    }
+
+    h2{
+        font-size:21px;
+    }
+
+    table{
+        font-size:14px;
+    }
+
+    th,
+    td{
+        padding:7px;
+    }
+
+    .creditStats{
+        grid-template-columns:1fr;
+    }
+
+    #menuButton{
+        top:12px;
+        left:12px;
+    }
+
 }
 
 </style>
-
 </head>
 
 <body>
+
+<!-- =========================
+     MENÜ
+========================= -->
 
 <div id="menuButton">☰</div>
 
 <div id="menuPopup">
 
-<a href="#">Dashboard</a>
-<a href="#">Einnahmen</a>
-<a href="#">Ausgaben</a>
-<a href="#">Analyse</a>
+    <button onclick="showPage('dashboardPage')">
+        🏠 Dashboard
+    </button>
+
+    <button onclick="showPage('monthlyPage')">
+        📅 Monatsübersicht
+    </button>
+
+    <button onclick="showPage('yearPage')">
+        📊 Jahresübersicht
+    </button>
+
+    <button onclick="showPage('fixedPage')">
+        🧾 Fixkosten
+    </button>
+
+    <button onclick="showPage('creditPage')">
+        💳 Kredite / Finanzierung
+    </button>
+
+    <button onclick="showPage('savingPage')">
+        🎯 Sparziele
+    </button>
+
+    <button onclick="showPage('analysisPage')">
+        📈 Diagramm Analyse
+    </button>
+
+    <button onclick="showPage('settingsPage')">
+        ⚙️ Einstellungen
+    </button>
 
 </div>
+
+
+<!-- =========================
+     DASHBOARD
+========================= -->
+
+<div id="dashboardPage" class="page active">
 
 <div class="container">
 
@@ -132,281 +386,2484 @@ margin-top:20px;
 
 </select>
 
+
+<!-- =========================
+     EINNAHMEN
+========================= -->
+
 <h2>Einnahmen</h2>
 
-<input id="incomeName" placeholder="Quelle">
+<input
+    id="incomeName"
+    type="text"
+    placeholder="Quelle z. B. Gehalt"
+>
 
-<input id="incomeAmount" type="number" step="0.01" placeholder="Betrag">
+<input
+    id="incomeAmount"
+    type="number"
+    step="0.01"
+    placeholder="Betrag z. B. 2500.00"
+>
 
-<button onclick="addIncome()">Hinzufügen</button>
+<button class="mainButton" onclick="addIncome()">
+    Einnahme hinzufügen
+</button>
+
+
+<div class="tableWrapper">
 
 <table>
 
 <thead>
+
 <tr>
 <th>Quelle</th>
 <th>Betrag</th>
 <th>Aktion</th>
 </tr>
+
 </thead>
 
 <tbody id="incomeTable"></tbody>
 
 </table>
 
+</div>
+
+
+<!-- =========================
+     AUSGABEN
+========================= -->
+
 <h2>Ausgaben</h2>
 
-<input id="expenseName" placeholder="Kategorie">
+<input
+    id="expenseName"
+    type="text"
+    placeholder="Kategorie z. B. Miete"
+>
 
-<input id="expenseAmount" type="number" step="0.01" placeholder="Betrag">
+<input
+    id="expenseAmount"
+    type="number"
+    step="0.01"
+    placeholder="Betrag z. B. 850.00"
+>
 
-<button onclick="addExpense()">Hinzufügen</button>
+<button class="mainButton" onclick="addExpense()">
+    Ausgabe hinzufügen
+</button>
+
+
+<div class="tableWrapper">
 
 <table>
 
 <thead>
+
 <tr>
 <th>Kategorie</th>
 <th>Betrag</th>
 <th>Aktion</th>
 </tr>
+
 </thead>
 
 <tbody id="expenseTable"></tbody>
 
 </table>
 
+</div>
+
+
+<!-- =========================
+     DIAGRAMM
+========================= -->
+
 <h2>Diagramm</h2>
 
 <select id="chartType" onchange="render()">
-<option value="pie">Kreisdiagramm</option>
-<option value="bar">Balkendiagramm</option>
+
+<option value="pie">
+Kreisdiagramm
+</option>
+
+<option value="bar">
+Balkendiagramm
+</option>
+
 </select>
+
+
+<div class="chartBox">
 
 <canvas id="chart"></canvas>
 
+</div>
+
+
+<!-- =========================
+     BILANZ
+========================= -->
+
 <h2>Bilanz</h2>
 
-<p id="totalIncome">Einnahmen: 0 €</p>
-<p id="totalExpense">Ausgaben: 0 €</p>
-<p id="balance">Übrig: 0 €</p>
+<div class="summary">
+
+<p id="totalIncome">
+Einnahmen: 0,00 €
+</p>
+
+<p id="totalExpense">
+Ausgaben: 0,00 €
+</p>
+
+<p id="balance">
+Übrig: 0,00 €
+</p>
 
 </div>
 
+</div>
+
+</div>
+
+
+<!-- =========================
+     MONATSÜBERSICHT
+========================= -->
+
+<div id="monthlyPage" class="page">
+
+<div class="container">
+
+<h1>📅 Monatsübersicht</h1>
+
+<div class="info">
+
+Die Monatsübersicht wird als nächster Schritt mit einer echten
+Monatsverwaltung verbunden. Deine bisherigen Einnahmen und
+Ausgaben bleiben dabei erhalten.
+
+</div>
+
+<button
+    class="mainButton"
+    onclick="showPage('dashboardPage')"
+>
+    Zurück zum Dashboard
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     JAHRESÜBERSICHT
+========================= -->
+
+<div id="yearPage" class="page">
+
+<div class="container">
+
+<h1>📊 Jahresübersicht</h1>
+
+<div class="info">
+
+Hier wird später die komplette Jahresauswertung mit
+Einnahmen, Ausgaben, Sparbetrag und Diagrammen angezeigt.
+
+</div>
+
+<button
+    class="mainButton"
+    onclick="showPage('dashboardPage')"
+>
+    Zurück zum Dashboard
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     FIXKOSTEN
+========================= -->
+
+<div id="fixedPage" class="page">
+
+<div class="container">
+
+<h1>🧾 Fixkosten</h1>
+
+<div class="info">
+
+Hier können später feste monatliche Kosten wie Miete,
+Versicherungen, Strom, Internet und Abos verwaltet werden.
+
+</div>
+
+<button
+    class="mainButton"
+    onclick="showPage('dashboardPage')"
+>
+    Zurück zum Dashboard
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     KREDIT-SEITE
+========================= -->
+
+<div id="creditPage" class="page">
+
+<div class="container">
+
+<h1>💳 Kredite / Finanzierung</h1>
+
+<div class="info">
+
+Hier kannst du deine Kredite eintragen.
+Die App berechnet anschließend Monat für Monat:
+
+<br><br>
+
+* Zinsen<br>
+* Tilgung<br>
+* Monatsrate<br>
+* verbleibende Restschuld<br>
+* Gesamtzinsen<br>
+* Gesamtrückzahlung<br>
+* voraussichtliches Kreditende
+
+<br><br>
+
+Die Berechnung geht zunächst von einem normalen Ratenkredit
+mit gleichbleibender Monatsrate aus.
+
+</div>
+
+
+<!-- =========================
+     KREDIT FORMULAR
+========================= -->
+
+<div class="card">
+
+<h2 id="creditFormTitle">
+Neuen Kredit hinzufügen
+</h2>
+
+
+<label>
+Name des Kredits
+</label>
+
+<input
+    id="creditName"
+    type="text"
+    placeholder="z. B. Autokredit"
+>
+
+
+<label>
+Kreditsumme / Darlehensbetrag
+</label>
+
+<input
+    id="creditPrincipal"
+    type="number"
+    step="0.01"
+    min="0"
+    placeholder="z. B. 20000.00"
+>
+
+
+<label>
+Zinssatz pro Jahr (%)
+</label>
+
+<input
+    id="creditRate"
+    type="number"
+    step="0.01"
+    min="0"
+    placeholder="z. B. 5.99"
+>
+
+
+<label>
+Monatliche Rate
+</label>
+
+<input
+    id="creditPayment"
+    type="number"
+    step="0.01"
+    min="0"
+    placeholder="z. B. 350.00"
+>
+
+
+<label>
+Startdatum
+</label>
+
+<input
+    id="creditStart"
+    type="date"
+>
+
+
+<label>
+Enddatum laut Vertrag (optional)
+</label>
+
+<input
+    id="creditEnd"
+    type="date"
+>
+
+
+<button
+    class="mainButton"
+    onclick="saveCredit()"
+>
+    Kredit speichern
+</button>
+
+
+<button
+    class="smallButton"
+    id="cancelCreditEditButton"
+    onclick="cancelCreditEdit()"
+    style="display:none;width:100%;margin-top:5px;"
+>
+    Bearbeiten abbrechen
+</button>
+
+</div>
+
+
+<!-- =========================
+     KREDIT LISTE
+========================= -->
+
+<h2>Meine Kredite</h2>
+
+<div id="creditList">
+
+</div>
+
+
+<!-- =========================
+     KREDIT DETAILS
+========================= -->
+
+<div id="creditDetails">
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     SPARZIELE
+========================= -->
+
+<div id="savingPage" class="page">
+
+<div class="container">
+
+<h1>🎯 Sparziele</h1>
+
+<div class="info">
+
+Hier können später Sparziele wie Urlaub, Auto,
+Notgroschen oder größere Anschaffungen angelegt werden.
+
+</div>
+
+<button
+    class="mainButton"
+    onclick="showPage('dashboardPage')"
+>
+    Zurück zum Dashboard
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     ANALYSE
+========================= -->
+
+<div id="analysisPage" class="page">
+
+<div class="container">
+
+<h1>📈 Diagramm Analyse</h1>
+
+<div class="info">
+
+Die ausführliche Analyse wird später erweitert.
+Geplant sind unter anderem:
+
+<br><br>
+
+* Ausgaben nach Kategorien<br>
+* Einnahmen nach Quellen<br>
+* monatliche Entwicklung<br>
+* Sparquote<br>
+* Kreditbelastung
+
+</div>
+
+<button
+    class="mainButton"
+    onclick="showPage('dashboardPage')"
+>
+    Zurück zum Dashboard
+</button>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     EINSTELLUNGEN
+========================= -->
+
+<div id="settingsPage" class="page">
+
+<div class="container">
+
+<h1>⚙️ Einstellungen</h1>
+
+<div class="info">
+
+Die Einstellungen werden im nächsten Schritt ausgebaut.
+
+Geplant sind:
+
+<br><br>
+
+* Sprache<br>
+* Währung<br>
+* Daten löschen<br>
+* Backup exportieren<br>
+* Hell-/Dunkelmodus
+
+</div>
+
+<button
+    class="mainButton"
+    onclick="deleteAllData()"
+>
+    Alle Finanzdaten löschen
+</button>
+
+<button
+    class="mainButton"
+    onclick="showPage('dashboardPage')"
+>
+    Zurück zum Dashboard
+</button>
+
+</div>
+
+</div>
+
+
 <script>
 
-let incomes=[]
-let expenses=[]
-let chart
+/* =====================================================
+   MENÜ
+===================================================== */
 
-let menuButton=document.getElementById("menuButton")
-let menuPopup=document.getElementById("menuPopup")
+const menuButton = document.getElementById("menuButton");
+const menuPopup = document.getElementById("menuPopup");
 
-menuButton.onclick=function(){
 
-if(menuPopup.style.display==="flex"){
-menuPopup.style.display="none"
-}else{
-menuPopup.style.display="flex"
+menuButton.addEventListener("click", function(){
+
+    if(menuPopup.style.display === "flex"){
+
+        menuPopup.style.display = "none";
+
+    }else{
+
+        menuPopup.style.display = "flex";
+
+    }
+
+});
+
+
+/* =====================================================
+   SEITENWECHSEL
+===================================================== */
+
+function showPage(pageId){
+
+    const pages = document.querySelectorAll(".page");
+
+    pages.forEach(function(page){
+
+        page.classList.remove("active");
+
+    });
+
+
+    const selectedPage = document.getElementById(pageId);
+
+    if(selectedPage){
+
+        selectedPage.classList.add("active");
+
+    }
+
+
+    menuPopup.style.display = "none";
+
+
+    if(pageId === "creditPage"){
+
+        renderCredits();
+
+    }
+
 }
 
-}
 
-/* Einnahmen hinzufügen */
+/* =====================================================
+   FINANZDATEN
+===================================================== */
+
+let incomes = [];
+let expenses = [];
+
+let chart = null;
+
+
+/* =====================================================
+   EINNAHME HINZUFÜGEN
+===================================================== */
 
 function addIncome(){
 
-let name=document.getElementById("incomeName").value
-let amount=parseFloat(document.getElementById("incomeAmount").value)
+    const name =
+        document.getElementById("incomeName").value.trim();
 
-if(!name || isNaN(amount)) return
+    const amount =
+        parseFloat(
+            document.getElementById("incomeAmount").value
+        );
 
-incomes.push({name,amount})
 
-saveData()
-render()
+    if(!name || isNaN(amount) || amount <= 0){
+
+        alert("Bitte Quelle und einen gültigen Betrag eingeben.");
+
+        return;
+
+    }
+
+
+    incomes.push({
+
+        name:name,
+        amount:amount
+
+    });
+
+
+    document.getElementById("incomeName").value = "";
+
+    document.getElementById("incomeAmount").value = "";
+
+
+    saveData();
+
+    render();
 
 }
 
-/* Ausgaben hinzufügen */
+
+/* =====================================================
+   AUSGABE HINZUFÜGEN
+===================================================== */
 
 function addExpense(){
 
-let name=document.getElementById("expenseName").value
-let amount=parseFloat(document.getElementById("expenseAmount").value)
+    const name =
+        document.getElementById("expenseName").value.trim();
 
-if(!name || isNaN(amount)) return
+    const amount =
+        parseFloat(
+            document.getElementById("expenseAmount").value
+        );
 
-expenses.push({name,amount})
 
-saveData()
-render()
+    if(!name || isNaN(amount) || amount <= 0){
 
-}
+        alert("Bitte Kategorie und einen gültigen Betrag eingeben.");
 
-/* löschen */
+        return;
 
-function deleteIncome(i){
+    }
 
-incomes.splice(i,1)
 
-saveData()
-render()
+    expenses.push({
 
-}
+        name:name,
+        amount:amount
 
-function deleteExpense(i){
+    });
 
-expenses.splice(i,1)
 
-saveData()
-render()
+    document.getElementById("expenseName").value = "";
 
-}
+    document.getElementById("expenseAmount").value = "";
 
-/* bearbeiten */
 
-function editIncome(i){
+    saveData();
 
-let newName=prompt("Neue Einnahme:",incomes[i].name)
-let newAmount=prompt("Neuer Betrag:",incomes[i].amount)
-
-if(newName && newAmount){
-
-incomes[i].name=newName
-incomes[i].amount=parseFloat(newAmount)
+    render();
 
 }
 
-saveData()
-render()
+
+/* =====================================================
+   EINNAHME LÖSCHEN
+===================================================== */
+
+function deleteIncome(index){
+
+    if(!confirm("Diese Einnahme wirklich löschen?")){
+
+        return;
+
+    }
+
+
+    incomes.splice(index,1);
+
+    saveData();
+
+    render();
 
 }
 
-function editExpense(i){
 
-let newName=prompt("Neue Kategorie:",expenses[i].name)
-let newAmount=prompt("Neuer Betrag:",expenses[i].amount)
+/* =====================================================
+   AUSGABE LÖSCHEN
+===================================================== */
 
-if(newName && newAmount){
+function deleteExpense(index){
 
-expenses[i].name=newName
-expenses[i].amount=parseFloat(newAmount)
+    if(!confirm("Diese Ausgabe wirklich löschen?")){
+
+        return;
+
+    }
+
+
+    expenses.splice(index,1);
+
+    saveData();
+
+    render();
 
 }
 
-saveData()
-render()
+
+/* =====================================================
+   EINNAHME BEARBEITEN
+===================================================== */
+
+function editIncome(index){
+
+    const newName =
+        prompt(
+            "Neue Einnahme:",
+            incomes[index].name
+        );
+
+
+    if(newName === null){
+
+        return;
+
+    }
+
+
+    const newAmount =
+        prompt(
+            "Neuer Betrag:",
+            incomes[index].amount
+        );
+
+
+    if(newAmount === null){
+
+        return;
+
+    }
+
+
+    const amount =
+        parseFloat(newAmount);
+
+
+    if(!newName.trim() || isNaN(amount) || amount <= 0){
+
+        alert("Ungültige Eingabe.");
+
+        return;
+
+    }
+
+
+    incomes[index].name = newName.trim();
+
+    incomes[index].amount = amount;
+
+
+    saveData();
+
+    render();
 
 }
 
-/* Anzeige */
+
+/* =====================================================
+   AUSGABE BEARBEITEN
+===================================================== */
+
+function editExpense(index){
+
+    const newName =
+        prompt(
+            "Neue Kategorie:",
+            expenses[index].name
+        );
+
+
+    if(newName === null){
+
+        return;
+
+    }
+
+
+    const newAmount =
+        prompt(
+            "Neuer Betrag:",
+            expenses[index].amount
+        );
+
+
+    if(newAmount === null){
+
+        return;
+
+    }
+
+
+    const amount =
+        parseFloat(newAmount);
+
+
+    if(!newName.trim() || isNaN(amount) || amount <= 0){
+
+        alert("Ungültige Eingabe.");
+
+        return;
+
+    }
+
+
+    expenses[index].name = newName.trim();
+
+    expenses[index].amount = amount;
+
+
+    saveData();
+
+    render();
+
+}
+
+
+/* =====================================================
+   EURO FORMAT
+===================================================== */
+
+function euro(value){
+
+    return new Intl.NumberFormat(
+        "de-DE",
+        {
+            minimumFractionDigits:2,
+            maximumFractionDigits:2
+        }
+    ).format(value) + " €";
+
+}
+
+
+/* =====================================================
+   DASHBOARD RENDERN
+===================================================== */
 
 function render(){
 
-let incomeTable=document.getElementById("incomeTable")
-let expenseTable=document.getElementById("expenseTable")
+    const incomeTable =
+        document.getElementById("incomeTable");
 
-incomeTable.innerHTML=""
-expenseTable.innerHTML=""
+    const expenseTable =
+        document.getElementById("expenseTable");
 
-let totalIncome=0
-let totalExpense=0
 
-incomes.forEach((i,index)=>{
+    incomeTable.innerHTML = "";
 
-totalIncome+=i.amount
+    expenseTable.innerHTML = "";
 
-incomeTable.innerHTML+=`
-<tr>
-<td>${i.name}</td>
-<td>${i.amount.toFixed(2)} €</td>
-<td>
-<button onclick="editIncome(${index})">✏️</button>
-<button onclick="deleteIncome(${index})">❌</button>
-</td>
-</tr>
-`
 
-})
+    let totalIncome = 0;
 
-expenses.forEach((e,index)=>{
+    let totalExpense = 0;
 
-totalExpense+=e.amount
 
-expenseTable.innerHTML+=`
-<tr>
-<td>${e.name}</td>
-<td>${e.amount.toFixed(2)} €</td>
-<td>
-<button onclick="editExpense(${index})">✏️</button>
-<button onclick="deleteExpense(${index})">❌</button>
-</td>
-</tr>
-`
+    /* Einnahmen */
 
-})
+    incomes.forEach(function(income,index){
 
-document.getElementById("totalIncome").innerText="Einnahmen: "+totalIncome.toFixed(2)+" €"
-document.getElementById("totalExpense").innerText="Ausgaben: "+totalExpense.toFixed(2)+" €"
-document.getElementById("balance").innerText="Übrig: "+(totalIncome-totalExpense).toFixed(2)+" €"
+        totalIncome += income.amount;
 
-updateChart(totalIncome,totalExpense)
+
+        incomeTable.innerHTML += `
+
+        <tr>
+
+            <td>
+                ${escapeHtml(income.name)}
+            </td>
+
+            <td>
+                ${euro(income.amount)}
+            </td>
+
+            <td>
+
+                <button
+                    class="smallButton"
+                    onclick="editIncome(${index})"
+                >
+                    ✏️
+                </button>
+
+                <button
+                    class="smallButton"
+                    onclick="deleteIncome(${index})"
+                >
+                    ❌
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+
+    /* Ausgaben */
+
+    expenses.forEach(function(expense,index){
+
+        totalExpense += expense.amount;
+
+
+        expenseTable.innerHTML += `
+
+        <tr>
+
+            <td>
+                ${escapeHtml(expense.name)}
+            </td>
+
+            <td>
+                ${euro(expense.amount)}
+            </td>
+
+            <td>
+
+                <button
+                    class="smallButton"
+                    onclick="editExpense(${index})"
+                >
+                    ✏️
+                </button>
+
+                <button
+                    class="smallButton"
+                    onclick="deleteExpense(${index})"
+                >
+                    ❌
+                </button>
+
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+
+    const balance =
+        totalIncome - totalExpense;
+
+
+    document.getElementById("totalIncome").innerText =
+        "Einnahmen: " + euro(totalIncome);
+
+
+    document.getElementById("totalExpense").innerText =
+        "Ausgaben: " + euro(totalExpense);
+
+
+    document.getElementById("balance").innerText =
+        "Übrig: " + euro(balance);
+
+
+    updateChart(
+        totalIncome,
+        totalExpense
+    );
 
 }
 
-/* Diagramm */
 
-function updateChart(income,expense){
+/* =====================================================
+   HTML SICHER DARSTELLEN
+===================================================== */
 
-let type=document.getElementById("chartType").value
+function escapeHtml(text){
 
-if(chart) chart.destroy()
-
-chart=new Chart(document.getElementById("chart"),{
-
-type:type,
-
-data:{
-labels:["Einnahmen","Ausgaben"],
-datasets:[{
-data:[income,expense]
-}]
-}
-
-})
+    return String(text)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 
 }
 
-/* Speicherung */
+
+/* =====================================================
+   DIAGRAMM
+===================================================== */
+
+function updateChart(
+    income,
+    expense
+){
+
+    const chartType =
+        document.getElementById("chartType").value;
+
+
+    if(chart){
+
+        chart.destroy();
+
+    }
+
+
+    const canvas =
+        document.getElementById("chart");
+
+
+    chart = new Chart(
+        canvas,
+        {
+
+            type:chartType,
+
+            data:{
+
+                labels:[
+                    "Einnahmen",
+                    "Ausgaben"
+                ],
+
+                datasets:[
+
+                    {
+
+                        data:[
+                            income,
+                            expense
+                        ]
+
+                    }
+
+                ]
+
+            },
+
+            options:{
+
+                responsive:true,
+
+                plugins:{
+
+                    legend:{
+
+                        display:true
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    );
+
+}
+
+
+/* =====================================================
+   DATEN SPEICHERN
+===================================================== */
 
 function saveData(){
 
-localStorage.setItem("incomes",JSON.stringify(incomes))
-localStorage.setItem("expenses",JSON.stringify(expenses))
+    localStorage.setItem(
+        "incomes",
+        JSON.stringify(incomes)
+    );
+
+
+    localStorage.setItem(
+        "expenses",
+        JSON.stringify(expenses)
+    );
 
 }
 
-/* Laden */
+
+/* =====================================================
+   DATEN LADEN
+===================================================== */
 
 function loadData(){
 
-let savedIncomes=localStorage.getItem("incomes")
-let savedExpenses=localStorage.getItem("expenses")
+    const savedIncomes =
+        localStorage.getItem("incomes");
 
-if(savedIncomes){
-incomes=JSON.parse(savedIncomes)
+
+    const savedExpenses =
+        localStorage.getItem("expenses");
+
+
+    if(savedIncomes){
+
+        try{
+
+            incomes =
+                JSON.parse(savedIncomes);
+
+        }catch(error){
+
+            incomes = [];
+
+        }
+
+    }
+
+
+    if(savedExpenses){
+
+        try{
+
+            expenses =
+                JSON.parse(savedExpenses);
+
+        }catch(error){
+
+            expenses = [];
+
+        }
+
+    }
+
+
+    render();
+
 }
 
-if(savedExpenses){
-expenses=JSON.parse(savedExpenses)
+
+/* =====================================================
+   KREDITE
+===================================================== */
+
+let credits = [];
+
+let selectedCreditId = null;
+
+let editingCreditId = null;
+
+
+/* =====================================================
+   KREDITE LADEN
+===================================================== */
+
+function loadCredits(){
+
+    const savedCredits =
+        localStorage.getItem("credits");
+
+
+    if(savedCredits){
+
+        try{
+
+            credits =
+                JSON.parse(savedCredits);
+
+        }catch(error){
+
+            credits = [];
+
+        }
+
+    }else{
+
+        credits = [];
+
+    }
+
 }
 
-render()
+
+/* =====================================================
+   KREDITE SPEICHERN
+===================================================== */
+
+function saveCredits(){
+
+    localStorage.setItem(
+        "credits",
+        JSON.stringify(credits)
+    );
 
 }
 
-loadData()
+
+/* =====================================================
+   DATUM FORMATIEREN
+===================================================== */
+
+function formatDate(dateString){
+
+    if(!dateString){
+
+        return "-";
+
+    }
+
+
+    const date =
+        new Date(
+            dateString + "T12:00:00"
+        );
+
+
+    return new Intl.DateTimeFormat(
+        "de-DE"
+    ).format(date);
+
+}
+
+
+/* =====================================================
+   MONAT FORMATIEREN
+===================================================== */
+
+function formatMonth(date){
+
+    return new Intl.DateTimeFormat(
+        "de-DE",
+        {
+            month:"long",
+            year:"numeric"
+        }
+    ).format(date);
+
+}
+
+
+/* =====================================================
+   KREDIT BERECHNEN
+===================================================== */
+
+function calculateCreditSchedule(credit){
+
+    const principal =
+        Number(credit.principal);
+
+
+    const annualRate =
+        Number(credit.rate) / 100;
+
+
+    const payment =
+        Number(credit.payment);
+
+
+    const monthlyRate =
+        annualRate / 12;
+
+
+    let balance = principal;
+
+    let totalInterest = 0;
+
+    let totalPaid = 0;
+
+    let rows = [];
+
+
+    let date =
+        new Date(
+            credit.start + "T12:00:00"
+        );
+
+
+    let safetyCounter = 0;
+
+
+    while(
+        balance > 0.005 &&
+        safetyCounter < 1200
+    ){
+
+        safetyCounter++;
+
+
+        const interest =
+            balance * monthlyRate;
+
+
+        let actualPayment =
+            payment;
+
+
+        const amountNeeded =
+            balance + interest;
+
+
+        if(actualPayment > amountNeeded){
+
+            actualPayment = amountNeeded;
+
+        }
+
+
+        const principalPaid =
+            actualPayment - interest;
+
+
+        /*
+         Wenn die Rate die monatlichen
+         Zinsen nicht einmal deckt,
+         kann der Kredit mit dieser Rate
+         nicht getilgt werden.
+        */
+
+        if(principalPaid <= 0){
+
+            return {
+
+                error:
+                "Die monatliche Rate ist zu niedrig. " +
+                "Sie deckt die monatlichen Zinsen nicht."
+
+            };
+
+        }
+
+
+        balance =
+            balance - principalPaid;
+
+
+        if(balance < 0.005){
+
+            balance = 0;
+
+        }
+
+
+        totalInterest += interest;
+
+        totalPaid += actualPayment;
+
+
+        rows.push({
+
+            month:
+                new Date(date),
+
+            payment:
+                actualPayment,
+
+            interest:
+                interest,
+
+            principal:
+                principalPaid,
+
+            balance:
+                balance
+
+        });
+
+
+        date.setMonth(
+            date.getMonth() + 1
+        );
+
+    }
+
+
+    if(safetyCounter >= 1200){
+
+        return {
+
+            error:
+            "Die Berechnung konnte nicht innerhalb " +
+            "von 1200 Monaten abgeschlossen werden."
+
+        };
+
+    }
+
+
+    const endDate =
+        rows.length > 0
+        ? rows[rows.length - 1].month
+        : null;
+
+
+    return {
+
+        rows:rows,
+
+        totalInterest:totalInterest,
+
+        totalPaid:totalPaid,
+
+        endDate:endDate
+
+    };
+
+}
+
+
+/* =====================================================
+   KREDIT SPEICHERN
+===================================================== */
+
+function saveCredit(){
+
+    const name =
+        document
+        .getElementById("creditName")
+        .value
+        .trim();
+
+
+    const principal =
+        parseFloat(
+            document
+            .getElementById("creditPrincipal")
+            .value
+        );
+
+
+    const rate =
+        parseFloat(
+            document
+            .getElementById("creditRate")
+            .value
+        );
+
+
+    const payment =
+        parseFloat(
+            document
+            .getElementById("creditPayment")
+            .value
+        );
+
+
+    const start =
+        document
+        .getElementById("creditStart")
+        .value;
+
+
+    const end =
+        document
+        .getElementById("creditEnd")
+        .value;
+
+
+    if(
+        !name ||
+        isNaN(principal) ||
+        principal <= 0 ||
+        isNaN(rate) ||
+        rate < 0 ||
+        isNaN(payment) ||
+        payment <= 0 ||
+        !start
+    ){
+
+        alert(
+            "Bitte fülle alle Pflichtfelder korrekt aus."
+        );
+
+        return;
+
+    }
+
+
+    if(end && end < start){
+
+        alert(
+            "Das Enddatum darf nicht vor dem Startdatum liegen."
+        );
+
+        return;
+
+    }
+
+
+    const creditData = {
+
+        name:name,
+
+        principal:principal,
+
+        rate:rate,
+
+        payment:payment,
+
+        start:start,
+
+        end:end
+
+    };
+
+
+    /*
+       Testen, ob der Kredit
+       mit der Rate überhaupt
+       zurückgezahlt werden kann.
+    */
+
+    const testCalculation =
+        calculateCreditSchedule(
+            creditData
+        );
+
+
+    if(testCalculation.error){
+
+        alert(
+            testCalculation.error
+        );
+
+        return;
+
+    }
+
+
+    if(editingCreditId){
+
+        const index =
+            credits.findIndex(
+                function(credit){
+
+                    return credit.id === editingCreditId;
+
+                }
+            );
+
+
+        if(index !== -1){
+
+            credits[index] = {
+
+                id:editingCreditId,
+
+                ...creditData
+
+            };
+
+        }
+
+
+        editingCreditId = null;
+
+    }else{
+
+        credits.push({
+
+            id:
+                Date.now().toString(),
+
+            ...creditData
+
+        });
+
+    }
+
+
+    saveCredits();
+
+
+    clearCreditForm();
+
+    renderCredits();
+
+
+    selectedCreditId =
+        credits.length > 0
+        ? credits[credits.length - 1].id
+        : null;
+
+
+    renderCreditDetails();
+
+
+    alert(
+        "Kredit wurde gespeichert."
+    );
+
+}
+
+
+/* =====================================================
+   KREDIT FORMULAR LEEREN
+===================================================== */
+
+function clearCreditForm(){
+
+    document.getElementById("creditName").value = "";
+
+    document.getElementById("creditPrincipal").value = "";
+
+    document.getElementById("creditRate").value = "";
+
+    document.getElementById("creditPayment").value = "";
+
+    document.getElementById("creditStart").value = "";
+
+    document.getElementById("creditEnd").value = "";
+
+
+    document.getElementById(
+        "creditFormTitle"
+    ).innerText =
+        "Neuen Kredit hinzufügen";
+
+
+    document.getElementById(
+        "cancelCreditEditButton"
+    ).style.display =
+        "none";
+
+}
+
+
+/* =====================================================
+   KREDIT BEARBEITEN
+===================================================== */
+
+function editCredit(id){
+
+    const credit =
+        credits.find(
+            function(item){
+
+                return item.id === id;
+
+            }
+        );
+
+
+    if(!credit){
+
+        return;
+
+    }
+
+
+    editingCreditId = id;
+
+
+    document.getElementById("creditName").value =
+        credit.name;
+
+
+    document.getElementById("creditPrincipal").value =
+        credit.principal;
+
+
+    document.getElementById("creditRate").value =
+        credit.rate;
+
+
+    document.getElementById("creditPayment").value =
+        credit.payment;
+
+
+    document.getElementById("creditStart").value =
+        credit.start;
+
+
+    document.getElementById("creditEnd").value =
+        credit.end || "";
+
+
+    document.getElementById(
+        "creditFormTitle"
+    ).innerText =
+        "Kredit bearbeiten";
+
+
+    document.getElementById(
+        "cancelCreditEditButton"
+    ).style.display =
+        "block";
+
+
+    window.scrollTo({
+
+        top:0,
+
+        behavior:"smooth"
+
+    });
+
+}
+
+
+/* =====================================================
+   BEARBEITEN ABBRECHEN
+===================================================== */
+
+function cancelCreditEdit(){
+
+    editingCreditId = null;
+
+    clearCreditForm();
+
+}
+
+
+/* =====================================================
+   KREDIT LÖSCHEN
+===================================================== */
+
+function deleteCredit(id){
+
+    const credit =
+        credits.find(
+            function(item){
+
+                return item.id === id;
+
+            }
+        );
+
+
+    if(!credit){
+
+        return;
+
+    }
+
+
+    if(
+        !confirm(
+            'Kredit "' +
+            credit.name +
+            '" wirklich löschen?'
+        )
+    ){
+
+        return;
+
+    }
+
+
+    credits =
+        credits.filter(
+            function(item){
+
+                return item.id !== id;
+
+            }
+        );
+
+
+    saveCredits();
+
+
+    if(selectedCreditId === id){
+
+        selectedCreditId =
+            credits.length > 0
+            ? credits[0].id
+            : null;
+
+    }
+
+
+    renderCredits();
+
+    renderCreditDetails();
+
+}
+
+
+/* =====================================================
+   KREDITLISTE
+===================================================== */
+
+function renderCredits(){
+
+    const container =
+        document.getElementById("creditList");
+
+
+    container.innerHTML = "";
+
+
+    if(credits.length === 0){
+
+        container.innerHTML = `
+
+        <div class="info">
+
+        Noch kein Kredit gespeichert.
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    credits.forEach(function(credit){
+
+        const calculation =
+            calculateCreditSchedule(
+                credit
+            );
+
+
+        let endText = "-";
+
+
+        if(
+            calculation &&
+            !calculation.error &&
+            calculation.endDate
+        ){
+
+            endText =
+                formatMonth(
+                    calculation.endDate
+                );
+
+        }
+
+
+        container.innerHTML += `
+
+        <div class="creditCard">
+
+            <h3>
+                💳 ${escapeHtml(credit.name)}
+            </h3>
+
+            <p>
+                Kreditsumme:
+                <strong>
+                    ${euro(credit.principal)}
+                </strong>
+            </p>
+
+            <p>
+                Zinssatz:
+                <strong>
+                    ${credit.rate.toFixed(2)} %
+                </strong>
+            </p>
+
+            <p>
+                Monatsrate:
+                <strong>
+                    ${euro(credit.payment)}
+                </strong>
+            </p>
+
+            <p>
+                Voraussichtliches Ende:
+                <strong>
+                    ${endText}
+                </strong>
+            </p>
+
+            <div class="creditButtons">
+
+                <button
+                    class="smallButton"
+                    onclick="selectCredit('${credit.id}')"
+                >
+                    📋 Tilgungsplan
+                </button>
+
+                <button
+                    class="smallButton"
+                    onclick="editCredit('${credit.id}')"
+                >
+                    ✏️ Bearbeiten
+                </button>
+
+                <button
+                    class="smallButton"
+                    onclick="deleteCredit('${credit.id}')"
+                >
+                    ❌ Löschen
+                </button>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+
+
+/* =====================================================
+   KREDIT AUSWÄHLEN
+===================================================== */
+
+function selectCredit(id){
+
+    selectedCreditId = id;
+
+    renderCreditDetails();
+
+
+    const details =
+        document.getElementById(
+            "creditDetails"
+        );
+
+
+    if(details){
+
+        details.scrollIntoView({
+
+            behavior:"smooth"
+
+        });
+
+    }
+
+}
+
+
+/* =====================================================
+   MONATE ZWISCHEN DATEN
+===================================================== */
+
+function monthsBetween(
+    startString,
+    endString
+){
+
+    const start =
+        new Date(
+            startString + "T12:00:00"
+        );
+
+
+    const end =
+        new Date(
+            endString + "T12:00:00"
+        );
+
+
+    let months =
+        (
+            end.getFullYear()
+            -
+            start.getFullYear()
+        ) * 12;
+
+
+    months +=
+        end.getMonth()
+        -
+        start.getMonth();
+
+
+    if(
+        end.getDate()
+        <
+        start.getDate()
+    ){
+
+        months--;
+
+    }
+
+
+    return Math.max(
+        0,
+        months
+    );
+
+}
+
+
+/* =====================================================
+   THEORETISCHE RATE BERECHNEN
+===================================================== */
+
+function calculateRequiredPayment(
+    principal,
+    annualRate,
+    numberOfPayments
+){
+
+    if(numberOfPayments <= 0){
+
+        return null;
+
+    }
+
+
+    const monthlyRate =
+        annualRate / 100 / 12;
+
+
+    if(monthlyRate === 0){
+
+        return principal / numberOfPayments;
+
+    }
+
+
+    return (
+        principal *
+        monthlyRate
+        /
+        (
+            1 -
+            Math.pow(
+                1 + monthlyRate,
+                -numberOfPayments
+            )
+        )
+    );
+
+}
+
+
+/* =====================================================
+   KREDIT DETAILS RENDERN
+===================================================== */
+
+function renderCreditDetails(){
+
+    const container =
+        document.getElementById(
+            "creditDetails"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if(!selectedCreditId){
+
+        return;
+
+    }
+
+
+    const credit =
+        credits.find(
+            function(item){
+
+                return item.id === selectedCreditId;
+
+            }
+        );
+
+
+    if(!credit){
+
+        return;
+
+    }
+
+
+    const calculation =
+        calculateCreditSchedule(
+            credit
+        );
+
+
+    if(calculation.error){
+
+        container.innerHTML = `
+
+        <div class="warning">
+
+        ${escapeHtml(
+            calculation.error
+        )}
+
+        </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const rows =
+        calculation.rows;
+
+
+    const firstRow =
+        rows.length > 0
+        ? rows[0]
+        : null;
+
+
+    const lastRow =
+        rows.length > 0
+        ? rows[rows.length - 1]
+        : null;
+
+
+    let contractMessage = "";
+
+
+    if(credit.end){
+
+        const contractMonths =
+            monthsBetween(
+                credit.start,
+                credit.end
+            ) + 1;
+
+
+        const requiredPayment =
+            calculateRequiredPayment(
+                credit.principal,
+                credit.rate,
+                contractMonths
+            );
+
+
+        const difference =
+            rows.length -
+            contractMonths;
+
+
+        if(Math.abs(difference) <= 1){
+
+            contractMessage = `
+
+            <div class="info">
+
+            Die eingegebene Monatsrate liegt ungefähr
+            im Bereich des angegebenen Vertragsendes.
+
+            <br><br>
+
+            Theoretisch notwendige Rate für
+            das Vertragsende:
+            <strong>
+                ${euro(requiredPayment)}
+            </strong>
+
+            </div>
+
+            `;
+
+        }else{
+
+            contractMessage = `
+
+            <div class="warning">
+
+            <strong>
+            Hinweis zum Vertragsende
+            </strong>
+
+            <br><br>
+
+            Laut deiner Monatsrate wäre der Kredit
+            voraussichtlich nach
+            <strong>
+                ${rows.length} Monaten
+            </strong>
+            zurückgezahlt.
+
+            Das eingegebene Vertragsende entspricht
+            ungefähr
+            <strong>
+                ${contractMonths} Monaten
+            </strong>.
+
+            <br><br>
+
+            Theoretisch notwendige Monatsrate
+            für das eingegebene Vertragsende:
+
+            <strong>
+                ${euro(requiredPayment)}
+            </strong>
+
+            <br><br>
+
+            Die tatsächlichen Vertragsbedingungen
+            deiner Bank können davon abweichen.
+
+            </div>
+
+            `;
+
+        }
+
+    }
+
+
+    let tableRows = "";
+
+
+    rows.forEach(function(row,index){
+
+        tableRows += `
+
+        <tr>
+
+            <td>
+                ${index + 1}
+            </td>
+
+            <td>
+                ${formatMonth(row.month)}
+            </td>
+
+            <td>
+                ${euro(row.payment)}
+            </td>
+
+            <td>
+                ${euro(row.interest)}
+            </td>
+
+            <td>
+                ${euro(row.principal)}
+            </td>
+
+            <td>
+                ${euro(row.balance)}
+            </td>
+
+        </tr>
+
+        `;
+
+    });
+
+
+    container.innerHTML = `
+
+    <div class="card">
+
+        <h2>
+            📋 Tilgungsplan:
+            ${escapeHtml(credit.name)}
+        </h2>
+
+
+        <div class="creditStats">
+
+            <div class="statBox">
+
+                Kreditsumme
+
+                <strong>
+                    ${euro(credit.principal)}
+                </strong>
+
+            </div>
+
+
+            <div class="statBox">
+
+                Zinssatz
+
+                <strong>
+                    ${credit.rate.toFixed(2)} %
+                </strong>
+
+            </div>
+
+
+            <div class="statBox">
+
+                Monatsrate
+
+                <strong>
+                    ${euro(credit.payment)}
+                </strong>
+
+            </div>
+
+
+            <div class="statBox">
+
+                Anzahl Monate
+
+                <strong>
+                    ${rows.length}
+                </strong>
+
+            </div>
+
+
+            <div class="statBox">
+
+                Gesamtzinsen
+
+                <strong>
+                    ${euro(calculation.totalInterest)}
+                </strong>
+
+            </div>
+
+
+            <div class="statBox">
+
+                Gesamtrückzahlung
+
+                <strong>
+                    ${euro(calculation.totalPaid)}
+                </strong>
+
+            </div>
+
+
+            <div class="statBox">
+
+                Start
+
+                <strong>
+                    ${formatDate(credit.start)}
+                </strong>
+
+            </div>
+
+
+            <div class="statBox">
+
+                Voraussichtliches Ende
+
+                <strong>
+                    ${
+                        calculation.endDate
+                        ? formatMonth(
+                            calculation.endDate
+                        )
+                        : "-"
+                    }
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        ${contractMessage}
+
+
+        <h3>
+            Monatliche Entwicklung
+        </h3>
+
+
+        <div class="tableWrapper">
+
+        <table>
+
+        <thead>
+
+        <tr>
+
+            <th>
+                Nr.
+            </th>
+
+            <th>
+                Monat
+            </th>
+
+            <th>
+                Rate
+            </th>
+
+            <th>
+                Zinsen
+            </th>
+
+            <th>
+                Tilgung
+            </th>
+
+            <th>
+                Restschuld
+            </th>
+
+        </tr>
+
+        </thead>
+
+
+        <tbody>
+
+            ${tableRows}
+
+        </tbody>
+
+        </table>
+
+        </div>
+
+    </div>
+
+    `;
+
+}
+
+
+/* =====================================================
+   ALLE DATEN LÖSCHEN
+===================================================== */
+
+function deleteAllData(){
+
+    const answer =
+        confirm(
+            "ACHTUNG!\n\n" +
+            "Sollen wirklich alle Einnahmen, " +
+            "Ausgaben und Kredite gelöscht werden?"
+        );
+
+
+    if(!answer){
+
+        return;
+
+    }
+
+
+    localStorage.removeItem("incomes");
+
+    localStorage.removeItem("expenses");
+
+    localStorage.removeItem("credits");
+
+
+    incomes = [];
+
+    expenses = [];
+
+    credits = [];
+
+    selectedCreditId = null;
+
+    editingCreditId = null;
+
+
+    clearCreditForm();
+
+    render();
+
+    renderCredits();
+
+    renderCreditDetails();
+
+
+    alert(
+        "Alle Finanzdaten wurden gelöscht."
+    );
+
+
+    showPage("dashboardPage");
+
+}
+
+
+/* =====================================================
+   START
+===================================================== */
+
+loadData();
+
+loadCredits();
+
+renderCredits();
 
 </script>
 
